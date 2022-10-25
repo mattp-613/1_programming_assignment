@@ -11,6 +11,10 @@ public class DBScan{
         this.pnts = pnts;
     }
 
+    DBScan(String fileName) throws FileNotFoundException{
+        this.pnts = read(fileName);
+    }
+
     public double setEps(double eps){
         //sets distance in between points to be considered in a cluster
         this.eps = eps;
@@ -40,25 +44,44 @@ public class DBScan{
     public List<Point3D> getPoints(){return this.pnts;};
 
 
-    public static List<Point3D> read(String filename){
+    public static List<Point3D> read(String fileName) throws FileNotFoundException{
+        //reads CSV file using java's Scanner util
+        //returns the list of points from the CSV file in List format
 
-        return null;
+        List<Point3D> pnts = new ArrayList<>();
+
+        Scanner sc = new Scanner(new File(fileName));  
+        sc.nextLine(); //skips the x,y,z
+        sc.useDelimiter(",|\\n"); //uses , and new line as delimiters
+
+        while (sc.hasNext()){
+
+            Double x = Double.parseDouble(sc.next());
+            Double y = Double.parseDouble(sc.next());
+            Double z = Double.parseDouble(sc.next());
+            Point3D pnt = new Point3D(x,y,z); //sc.next() moves to the next value and returns the current value
+            pnts.add(pnt);
+            
+        }
+
+        sc.close();
+        return pnts;
     }
 
-    public void save(String filename){
-        //saves all the points with their cluster label and associated RGB color
-
-
+    public void save(String fileName){
+        //saves CSV File
+        //includes x,y,z,cluster #, and RGB
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args)  throws FileNotFoundException{
 
         //FILENAME, EPS AND MINPOINTS
         String fileName = args[0];
         double eps = Double.parseDouble(args[1]);
         double minPnts = Double.parseDouble(args[2]);
 
-    }
+        DBScan db = new DBScan(fileName);
 
+    }
 
 }
