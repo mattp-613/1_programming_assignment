@@ -58,8 +58,6 @@ public class DBScan{
         double eps = Double.parseDouble(args[1]);
         double minPnts = Double.parseDouble(args[2]);
 
-        
-
     }
 
 
