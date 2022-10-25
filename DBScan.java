@@ -29,7 +29,15 @@ public class DBScan{
 
     public void findClusters(){
         //executes DBScan algorithm
+        //this algorithm will attatch a cluster to each Point3D object in the pnts list
         
+        for(int i = 0; i < this.pnts.size(); i++){
+            Point3D pnt = this.pnts(i);
+
+            if(pnt.getcluterLabel != null){
+                
+            }
+        }
     }
 
     public int getNumberOfClusters(){
@@ -61,7 +69,7 @@ public class DBScan{
             Double z = Double.parseDouble(sc.next());
             Point3D pnt = new Point3D(x,y,z); //sc.next() moves to the next value and returns the current value
             pnts.add(pnt);
-            
+
         }
 
         sc.close();
