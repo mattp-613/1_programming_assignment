@@ -34,9 +34,12 @@ public class DBScan{
         for(int i = 0; i < this.pnts.size(); i++){
             Point3D pnt = this.pnts.get(i);
 
-            //if(pnt.getclusterLabel() != null){
+            if(pnt.getClusterLabel() == -1){ //okay so, an int in java cannot be null. so i decided any cluster label with -1 is considered unlabelled
 
-            //}
+                //unlabelled point
+                
+
+            }
         }
     }
 
@@ -83,6 +86,8 @@ public class DBScan{
 
     public static void main(String[] args)  throws FileNotFoundException{
 
+        //javac DBScan.java && java DBScan Point_Cloud_2.csv 7 10
+
         //FILENAME, EPS AND MINPOINTS
         String fileName = args[0];
         double eps = Double.parseDouble(args[1]);
@@ -91,7 +96,7 @@ public class DBScan{
 
         //TESTING GROUNDS
 
-        
+
         /* 
         DBScan db = new DBScan(fileName);
 
