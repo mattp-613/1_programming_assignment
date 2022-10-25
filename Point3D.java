@@ -38,7 +38,7 @@ public class Point3D {
         this.blue = blue;
     }
 
-    public int getcluterLabel(){return this.clusterLabel;};
+    public int getclusterLabel(){return this.clusterLabel;};
 
     public double Distance(Point3D pt){
         double x = Math.pow(this.coordX - pt.getX(), 2);

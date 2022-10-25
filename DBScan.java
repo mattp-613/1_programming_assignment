@@ -32,11 +32,11 @@ public class DBScan{
         //this algorithm will attatch a cluster to each Point3D object in the pnts list
         
         for(int i = 0; i < this.pnts.size(); i++){
-            Point3D pnt = this.pnts(i);
+            Point3D pnt = this.pnts.get(i);
 
-            if(pnt.getcluterLabel != null){
-                
-            }
+            //if(pnt.getclusterLabel() != null){
+
+            //}
         }
     }
 
@@ -59,7 +59,7 @@ public class DBScan{
         List<Point3D> pnts = new ArrayList<>();
 
         Scanner sc = new Scanner(new File(fileName));  
-        sc.nextLine(); //skips the x,y,z
+        sc.nextLine(); //skips the x,y,z string headers
         sc.useDelimiter(",|\\n"); //uses , and new line as delimiters
 
         while (sc.hasNext()){
@@ -88,7 +88,28 @@ public class DBScan{
         double eps = Double.parseDouble(args[1]);
         double minPnts = Double.parseDouble(args[2]);
 
+
+        //TESTING GROUNDS
+
+        
+        /* 
         DBScan db = new DBScan(fileName);
+
+        NearestNeighbors nb = new NearestNeighbors(db.getPoints());
+
+        Point3D fart = new Point3D(10,5.0,1.3);
+        int fart2 = 7;
+
+        List<Point3D> farts = new ArrayList<>();
+        farts = nb.rangeQuery(fart2, fart);
+
+        for(int i = 0; i < farts.size(); i++){
+
+            System.out.println(farts.get(i).getX());
+
+        }
+
+        */
 
     }
 
