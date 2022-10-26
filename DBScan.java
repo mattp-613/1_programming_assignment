@@ -32,6 +32,7 @@ public class DBScan{
         //this algorithm will attatch a cluster to each Point3D object in the pnts list
         
         int C = 0;
+        Stack<Point3D> S = new Stack<>();
 
         for(int i = 0; i < this.pnts.size(); i++){
             Point3D pnt = this.pnts.get(i);
@@ -50,10 +51,32 @@ public class DBScan{
 
             }
 
+            //points that are not labelled as noise (label != 0)
 
+            C += 1;
 
+            pnt.setClusterLabel(C);
+            S.push(pnt);
+        
+            while(S.size() != 0){
+                Point3D Q = S.pop();
 
-            
+                if (Q.getClusterLabel() == 0){
+                    Q.setClusterLabel(C);
+                }
+
+                if (Q.getClusterLabel() == -1){
+                
+                    Q.setClusterLabel(C);
+                    NearestNeighbors nb = new NearestNeighbors(this.pnts);
+                    List<Point3D> neighbors = new ArrayList<>();
+                    neighbors = nb.rangeQuery(this.eps, Q);
+
+                    if(neighbors.size() >= this.minPnts){
+                        S.push(pnt);
+                    }
+                }
+            }
         }
     }
 
@@ -111,7 +134,7 @@ public class DBScan{
         //TESTING GROUNDS
 
 
-        /* 
+         
         DBScan db = new DBScan(fileName);
 
         NearestNeighbors nb = new NearestNeighbors(db.getPoints());
@@ -122,13 +145,9 @@ public class DBScan{
         List<Point3D> farts = new ArrayList<>();
         farts = nb.rangeQuery(fart2, fart);
 
-        for(int i = 0; i < farts.size(); i++){
+        db.findClusters();
 
-            System.out.println(farts.get(i).getX());
-
-        }
-
-        */
+        
 
     }
 
