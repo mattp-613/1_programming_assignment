@@ -5,7 +5,7 @@ public class Point3D {
     double coordX;
     double coordY;
     double coordZ;
-    int clusterLabel;
+    int clusterLabel = -1;
 
     double red;
     double green;
@@ -28,7 +28,7 @@ public class Point3D {
     public double blue(){return this.blue;};
 
 
-    public void setclusterLabel(int clusterLabel){
+    public void setClusterLabel(int clusterLabel){
         this.clusterLabel = clusterLabel;
     }
 
@@ -38,7 +38,7 @@ public class Point3D {
         this.blue = blue;
     }
 
-    public int getclusterLabel(){return this.clusterLabel;};
+    public int getClusterLabel(){return this.clusterLabel;};
 
     public double Distance(Point3D pt){
         double x = Math.pow(this.coordX - pt.getX(), 2);

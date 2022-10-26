@@ -15,6 +15,13 @@ public class DBScan{
         this.pnts = read(fileName);
     }
 
+    //default constructor, PLEASE USE THIS
+    DBScan(String fileName, double eps, double minPnts) throws FileNotFoundException{
+        this.pnts = read(fileName);
+        this.eps = eps;
+        this.minPnts = minPnts;
+    }
+
     public double setEps(double eps){
         //sets distance in between points to be considered in a cluster
         this.eps = eps;
@@ -31,12 +38,52 @@ public class DBScan{
         //executes DBScan algorithm
         //this algorithm will attatch a cluster to each Point3D object in the pnts list
         
+        int C = 0;
+        Stack<Point3D> S = new Stack<>();
+
         for(int i = 0; i < this.pnts.size(); i++){
             Point3D pnt = this.pnts.get(i);
 
-            //if(pnt.getclusterLabel() != null){
+            if(pnt.getClusterLabel() == -1){ //okay so, an int in java cannot be null. so i decided any cluster label with -1 is considered unlabelled
+                
+                //Find and set noise points to cluster 0
+                NearestNeighbors nb = new NearestNeighbors(this.pnts);
+                List<Point3D> neighbors = new ArrayList<>();
+                neighbors = nb.rangeQuery(this.eps, pnt);
 
-            //}
+                if (neighbors.size() < this.minPnts){
+                    pnt.setClusterLabel(0); //set it as noise if it doesnt meet the neighbour requirement
+                }
+
+            }
+
+            //points that are not labelled as noise (label != 0)
+
+            //pnt.setClusterLabel(C); //????????????????????????????????????????????????? THEN WHY LABEL THEM ABOVE
+            //pseudocode is stupid im not doing that
+            S.push(pnt);
+            C += 1;
+            while(S.size() != 0){
+                Point3D Q = S.pop();
+                
+                if (Q.getClusterLabel() == 0){
+                    Q.setClusterLabel(C);
+                }
+
+                if (Q.getClusterLabel() == -1){
+                    Q.setClusterLabel(C);
+                    NearestNeighbors nb = new NearestNeighbors(this.pnts);
+                    List<Point3D> neighbors = new ArrayList<>();
+                    neighbors = nb.rangeQuery(this.eps, Q);
+
+                    if(neighbors.size() >= this.minPnts){
+                            for(int y = 0; y < neighbors.size(); y++){
+                                Point3D N = neighbors.get(y);
+                                S.push(N);
+                            }
+                    }
+                }
+            }
         }
     }
 
@@ -83,6 +130,8 @@ public class DBScan{
 
     public static void main(String[] args)  throws FileNotFoundException{
 
+        //javac DBScan.java && java DBScan Point_Cloud_2.csv 7 10
+
         //FILENAME, EPS AND MINPOINTS
         String fileName = args[0];
         double eps = Double.parseDouble(args[1]);
@@ -91,25 +140,21 @@ public class DBScan{
 
         //TESTING GROUNDS
 
-        
-        /* 
-        DBScan db = new DBScan(fileName);
+
+         
+        DBScan db = new DBScan(fileName, eps, minPnts);
 
         NearestNeighbors nb = new NearestNeighbors(db.getPoints());
 
-        Point3D fart = new Point3D(10,5.0,1.3);
-        int fart2 = 7;
+        db.findClusters();
 
-        List<Point3D> farts = new ArrayList<>();
-        farts = nb.rangeQuery(fart2, fart);
+        List<Point3D> dbpoints = db.getPoints();
 
-        for(int i = 0; i < farts.size(); i++){
-
-            System.out.println(farts.get(i).getX());
-
+        for(int i = 0; i < dbpoints.size(); i++){
+            System.out.println(dbpoints.get(i).getClusterLabel());
         }
 
-        */
+        
 
     }
 
