@@ -31,15 +31,29 @@ public class DBScan{
         //executes DBScan algorithm
         //this algorithm will attatch a cluster to each Point3D object in the pnts list
         
+        int C = 0;
+
         for(int i = 0; i < this.pnts.size(); i++){
             Point3D pnt = this.pnts.get(i);
 
             if(pnt.getClusterLabel() == -1){ //okay so, an int in java cannot be null. so i decided any cluster label with -1 is considered unlabelled
 
-                //unlabelled point
-                
+                //unlabelled points
+                //find neighbors of pnt
+                NearestNeighbors nb = new NearestNeighbors(this.pnts);
+                List<Point3D> neighbors = new ArrayList<>();
+                neighbors = nb.rangeQuery(this.eps, pnt);
+
+                if (neighbors.size() < minPnts){
+                    pnt.setClusterLabel(0); //set it as noise if it doesnt meet the neighbour requirement
+                }
 
             }
+
+
+
+
+            
         }
     }
 
