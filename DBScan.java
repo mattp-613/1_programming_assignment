@@ -45,8 +45,8 @@ public class DBScan{
             Point3D pnt = this.pnts.get(i);
 
             if(pnt.getClusterLabel() == -1){ //okay so, an int in java cannot be null. so i decided any cluster label with -1 is considered unlabelled
-                //unlabelled points
-                //find neighbors of pnt
+                
+                //Find and set noise points to cluster 0
                 NearestNeighbors nb = new NearestNeighbors(this.pnts);
                 List<Point3D> neighbors = new ArrayList<>();
                 neighbors = nb.rangeQuery(this.eps, pnt);
@@ -57,30 +57,29 @@ public class DBScan{
 
             }
 
-            System.out.println(pnt.getClusterLabel());
             //points that are not labelled as noise (label != 0)
 
-            C += 1;
-
-            pnt.setClusterLabel(C); //????????????????????????????????????????????????? THEN WHY LABEL THEM ABOVE
+            //pnt.setClusterLabel(C); //????????????????????????????????????????????????? THEN WHY LABEL THEM ABOVE
             S.push(pnt);
-        
+            C += 1;
             while(S.size() != 0){
                 Point3D Q = S.pop();
-
+                
                 if (Q.getClusterLabel() == 0){
                     Q.setClusterLabel(C);
                 }
 
                 if (Q.getClusterLabel() == -1){
-                
                     Q.setClusterLabel(C);
                     NearestNeighbors nb = new NearestNeighbors(this.pnts);
                     List<Point3D> neighbors = new ArrayList<>();
                     neighbors = nb.rangeQuery(this.eps, Q);
 
                     if(neighbors.size() >= this.minPnts){
-                        S.push(pnt);
+                            for(int y = 0; y < neighbors.size(); y++){
+                                Point3D N = neighbors.get(y);
+                                S.push(N);
+                            }
                     }
                 }
             }
