@@ -15,6 +15,13 @@ public class DBScan{
         this.pnts = read(fileName);
     }
 
+    //default constructor, PLEASE USE THIS
+    DBScan(String fileName, double eps, double minPnts) throws FileNotFoundException{
+        this.pnts = read(fileName);
+        this.eps = eps;
+        this.minPnts = minPnts;
+    }
+
     public double setEps(double eps){
         //sets distance in between points to be considered in a cluster
         this.eps = eps;
@@ -135,17 +142,17 @@ public class DBScan{
 
 
          
-        DBScan db = new DBScan(fileName);
+        DBScan db = new DBScan(fileName, eps, minPnts);
 
         NearestNeighbors nb = new NearestNeighbors(db.getPoints());
 
-        Point3D fart = new Point3D(10,5.0,1.3);
-        int fart2 = 7;
-
-        List<Point3D> farts = new ArrayList<>();
-        farts = nb.rangeQuery(fart2, fart);
-
         db.findClusters();
+
+        List<Point3D> dbpoints = db.getPoints();
+
+        for(int i = 0; i < dbpoints.size(); i++){
+            System.out.println(dbpoints.get(i).getClusterLabel());
+        }
 
         
 
