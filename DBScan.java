@@ -87,12 +87,26 @@ public class DBScan{
         }
     }
 
+    public void findRGB(){
+        //this finds the RGB per cluster
+        //uses getNumberOfClusters
+    }
+
     public int getNumberOfClusters(){
         //goes through the list of points
         //finds and returns the number of clustered points
-        //requires DBScan to label the points in clusters, otherwise will return dumb/inaccurate answer
+        //requires findClusters() to label the points in clusters, otherwise will return dumb/inaccurate answer
+        //this method uses a Set object
 
-        return 0;
+        List<Integer> allClusters = new ArrayList<>();
+        for(int i = 0; i < this.pnts.size(); i++){
+            allClusters.add(i,this.pnts.get(i).getClusterLabel());
+
+        }
+
+        Set<Integer> sizeSet = new HashSet<>(allClusters);
+        return sizeSet.size();
+
     }
 
 
@@ -128,6 +142,13 @@ public class DBScan{
         //includes x,y,z,cluster #, and RGB
     }
 
+    public List<Point3D> sortByCluster(){
+        //this is used mainly by save()
+        //it sorts all points by cluster, from lowest cluster number to highest
+
+        return null;
+    }
+
     public static void main(String[] args)  throws FileNotFoundException{
 
         //javac DBScan.java && java DBScan Point_Cloud_2.csv 7 10
@@ -140,7 +161,6 @@ public class DBScan{
 
         //TESTING GROUNDS
 
-
          
         DBScan db = new DBScan(fileName, eps, minPnts);
 
@@ -150,11 +170,12 @@ public class DBScan{
 
         List<Point3D> dbpoints = db.getPoints();
 
+        /*
         for(int i = 0; i < dbpoints.size(); i++){
             System.out.println(dbpoints.get(i).getClusterLabel());
-        }
+        }*/
 
-        
+        System.out.println(db.getNumberOfClusters());
 
     }
 
