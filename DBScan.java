@@ -89,7 +89,27 @@ public class DBScan{
 
     public void findRGB(){
         //this finds the RGB per cluster
-        //uses getNumberOfClusters
+        //uses a random seed multiplier that multiplies the seed by the cluster # to obtain the RGB value
+
+        Random rand = new Random();
+        double redSeed = rand.nextDouble();
+        double greenSeed = rand.nextDouble();
+        double blueSeed = rand.nextDouble();
+
+        for(int i = 0; i < this.pnts.size(); i++){
+
+            int intRed = (int) (redSeed * this.pnts.get(i).getClusterLabel());
+            double red = (redSeed * this.pnts.get(i).getClusterLabel()) - intRed;
+
+            int intGreen = (int) (greenSeed * this.pnts.get(i).getClusterLabel());
+            double green = (greenSeed * this.pnts.get(i).getClusterLabel()) - intGreen;
+
+            int intBlue = (int) (blueSeed * this.pnts.get(i).getClusterLabel());
+            double blue = (blueSeed * this.pnts.get(i).getClusterLabel()) - intBlue;
+
+            this.pnts.get(i).setRGB(Math.round(red*100.0)/100.0,Math.round(green*100.0)/100.0,Math.round(blue*100.0)/100.0);
+
+        }
     }
 
     public int getNumberOfClusters(){
@@ -170,12 +190,12 @@ public class DBScan{
 
         List<Point3D> dbpoints = db.getPoints();
 
-        /*
+        db.findRGB();
         for(int i = 0; i < dbpoints.size(); i++){
-            System.out.println(dbpoints.get(i).getClusterLabel());
-        }*/
-
-        System.out.println(db.getNumberOfClusters());
+            System.out.println(db.getPoints().get(i).red());
+            System.out.println(db.getPoints().get(i).green());
+            System.out.println(db.getPoints().get(i).blue());
+        }
 
     }
 
