@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.*;
+import java.nio.file.*;
 
 public class DBScan{
     
@@ -15,7 +16,7 @@ public class DBScan{
         this.pnts = read(fileName);
     }
 
-    //default constructor, PLEASE USE THIS
+    //default constructor
     DBScan(String fileName, double eps, double minPnts) throws FileNotFoundException{
         this.pnts = read(fileName);
         this.eps = eps;
@@ -157,19 +158,40 @@ public class DBScan{
         return pnts;
     }
 
-    public void save(String fileName){
-        //saves CSV File
+    public void save(String fileName) throws IOException{
+        //saves CSV File as filename_clusters_#eps_#minPts_#nClusters.csv
         //includes x,y,z,cluster #, and RGB
-    }
+        //ensure that findClusters() and findRGB() have ran with newest data, otherwise this will output bad values
 
-    public List<Point3D> sortByCluster(){
-        //this is used mainly by save()
-        //it sorts all points by cluster, from lowest cluster number to highest
+        int nClusters = getNumberOfClusters();
+        String saveFileName = (fileName + "_clusters_" + eps + "_" + minPnts + "_" + nClusters + ".csv");
+        
+            // create a writer
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(saveFileName));
+        
+            // write header record
+            writer.write("X,Y,Z,C,R,G,B");
+            writer.newLine();
+        
+            // write all records
+            for (int i = 0; i < this.pnts.size(); i++) {
+                writer.write(this.pnts.get(i).getX() + ",");
+                writer.write(this.pnts.get(i).getY() + ",");
+                writer.write(this.pnts.get(i).getZ() + ",");
+                writer.write(this.pnts.get(i).getClusterLabel() + ",");
+                writer.write(this.pnts.get(i).red() + ",");
+                writer.write(this.pnts.get(i).green() + ",");
+                writer.write(this.pnts.get(i).blue() + "\n");
+                //writer.newLine();
+            }
+        
+            //close the writer
+            writer.close();
+        
 
-        return null;
-    }
+        }
 
-    public static void main(String[] args)  throws FileNotFoundException{
+    public static void main(String[] args) throws FileNotFoundException, IOException{
 
         //javac DBScan.java && java DBScan Point_Cloud_2.csv 7 10
 
@@ -191,11 +213,8 @@ public class DBScan{
         List<Point3D> dbpoints = db.getPoints();
 
         db.findRGB();
-        for(int i = 0; i < dbpoints.size(); i++){
-            System.out.println(db.getPoints().get(i).red());
-            System.out.println(db.getPoints().get(i).green());
-            System.out.println(db.getPoints().get(i).blue());
-        }
+
+        db.save("test1");
 
     }
 
