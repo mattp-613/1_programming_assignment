@@ -1,3 +1,4 @@
+// Matthew Petrucci 300119235
 import java.lang.Math;
 
 public class Point3D {
@@ -33,6 +34,7 @@ public class Point3D {
     }
 
     public void setRGB(double red, double green, double blue){
+        //Sets the RGB values of a 3D point
         this.red = red;
         this.green = green;
         this.blue = blue;
@@ -41,6 +43,7 @@ public class Point3D {
     public int getClusterLabel(){return this.clusterLabel;};
 
     public double Distance(Point3D pt){
+        //Uses euclidean distance function to find the distance between two 3D points
         double x = Math.pow(this.coordX - pt.getX(), 2);
         double y = Math.pow(this.coordY - pt.getY(), 2);
         double z = Math.pow(this.coordZ - pt.getZ(), 2);

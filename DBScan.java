@@ -1,3 +1,4 @@
+// Matthew Petrucci 300119235
 import java.io.*;
 import java.util.*;
 import java.nio.file.*;
@@ -166,14 +167,12 @@ public class DBScan{
         int nClusters = getNumberOfClusters();
         String saveFileName = (fileName + "_clusters_" + eps + "_" + minPnts + "_" + nClusters + ".csv");
         
-            // create a writer
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(saveFileName));
         
-            // write header record
+            //header record
             writer.write("X,Y,Z,C,R,G,B");
             writer.newLine();
         
-            // write all records
             for (int i = 0; i < this.pnts.size(); i++) {
                 writer.write(this.pnts.get(i).getX() + ",");
                 writer.write(this.pnts.get(i).getY() + ",");
@@ -182,10 +181,8 @@ public class DBScan{
                 writer.write(this.pnts.get(i).red() + ",");
                 writer.write(this.pnts.get(i).green() + ",");
                 writer.write(this.pnts.get(i).blue() + "\n");
-                //writer.newLine();
             }
         
-            //close the writer
             writer.close();
         
 
